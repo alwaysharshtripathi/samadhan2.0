@@ -10,9 +10,9 @@ We believe that the journey is as important as the destination, and this reposit
 👥 Meet the Team
 Meet the dedicated members of our team. We are a group of passionate individuals eager to learn and contribute.
 
-Harsh Tripathi - Team Lead, Frontend Developer, Design - GitHub: @alwaysharshtripathi
-Devansh Shrivastava - Backend Developer - GitHub: @devanshshrivastava16
-Kaustubh Bajpai - Database and UI - GitHub: @Kaustubhbajpai7777
+Harsh Tripathi - Team Lead, Frontend Developer, Design - GitHub: @alwaysharshtripathi; 
+Devansh Shrivastava - Backend Developer - GitHub: @devanshshrivastava16; 
+Kaustubh Bajpai - Database and UI - GitHub: @Kaustubhbajpai7777; 
 
 ✨ Our Commitment
 We pledge to uphold the following principles throughout the challenge:
