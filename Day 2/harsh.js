@@ -11,4 +11,4 @@ function findHighest(arr) {
 }
 
 let topMarks = findHighest(marks);
-console.log("🏆 Highest Marks:", topMarks);
+console.log(" Highest Marks :", topMarks);
