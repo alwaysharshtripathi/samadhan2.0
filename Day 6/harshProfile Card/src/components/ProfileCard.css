@@ -1,0 +1,17 @@
+.card {
+  width: 300px;
+  padding: 20px;
+  margin: 40px auto;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
