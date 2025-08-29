@@ -1,12 +1,37 @@
-# React + Vite
+# 🎨 Personal Profile Card
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive profile card with glassmorphism design and smooth animations. Built with HTML, CSS, and JavaScript for showcasing personal information in an elegant way.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Glassmorphism Design**: Modern frosted glass effect with backdrop blur
+- **Responsive Layout**: Adapts perfectly to all screen sizes
+- **Smooth Animations**: Subtle hover effects and transitions
+- **Social Integration**: Direct links to social profiles
+- **Online Status Indicator**: Shows current availability
+- **Professional Styling**: Clean typography and modern color scheme
+- **Interactive Elements**: Hover effects and clickable contact button
 
-## Expanding the ESLint configuration
+## 🛠️ Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React**: Component-based UI library
+- **Vite**: Fast build tool and development server
+- **JavaScript (ES6+)**: Modern JavaScript features
+- **CSS3**: Advanced styling with flexbox/grid, backdrop-filter, and animations
+- **Node.js**: Runtime environment for development
+- **Modern CSS Features**:
+  - Backdrop blur effects
+  - CSS Grid/Flexbox
+  - Custom properties (CSS variables)
+  - Smooth transitions
+
+## 🎯 Design Elements
+
+- **Color Palette**: Deep navy gradient background with cyan accents
+- **Typography**: Clean, modern fonts with proper hierarchy
+- **Layout**: Card-based design with asymmetrical photo placement
+- **Visual Effects**: Subtle shadows, gradients, and transparency
+- **Icons**: Social media and contact icons for better UX
+
+## 🔎 Project Images
+<img src="[./screenshots/mobile-view.png](https://i.ibb.co/TDp0ggKt/Screenshot-2025-08-29-235553.png)" alt="Profile Card" width="300">
