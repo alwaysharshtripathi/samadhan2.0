@@ -34,6 +34,5 @@ A modern, responsive profile card with glassmorphism design and smooth animation
 - **Icons**: Social media and contact icons for better UX
 
 ## 🔎 Project Images
-<img src="https://i.ibb.co/TDp0ggKt/Screenshot-2025-08-29-235553.png" alt="Profile Card" width="300">
-<img width="609" height="762" alt="image" src="https://github.com/user-attachments/assets/163e1cec-cbea-4a4f-9f4f-4ebbafdfe815" />
+<img width="300" height=auto alt="image" src="https://github.com/user-attachments/assets/163e1cec-cbea-4a4f-9f4f-4ebbafdfe815" />
 
