@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif; /* ✅ ADD THIS */
+  background: linear-gradient(135deg, #eef2f3, #8e9eab);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px 20px;
+}
+
+.app {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.card {
+  background-color: #fefefe;
+  padding: 30px;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+h2 {
+  margin-top: 0;
+  color: #222;
+  font-weight: 600;
+}
+
+button {
+  padding: 10px 20px;
+  margin-right: 15px;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition for bg and scale */
+  box-shadow: 0 4px 15px rgba(64, 195, 255, 0.4);
+}
+
+button:hover {
+  background: linear-gradient(to right, #43e97b, #38f9d7);
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+  box-shadow: 0 6px 20px rgba(56, 249, 215, 0.6);
+}
+
+button:active {
+  transform: scale(0.97); /* Button press effect */
+  box-shadow: 0 3px 10px rgba(56, 249, 215, 0.4);
+}
+
+input {
+  padding: 12px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 15px;
+  cursor: text;
+}
+
+input:focus {
+  border-color: #4facfe;
+  box-shadow: 0 0 5px rgba(79, 172, 254, 0.5);
+  outline: none;
+}
+
+p {
+  font-size: 18px;
+  color: #333;
+  margin-top: 15px;
+}
