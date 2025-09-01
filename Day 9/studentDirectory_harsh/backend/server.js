@@ -9,9 +9,9 @@ app.use(express.json());
 
 // Dummy students data
 let students = [
-  { id: 1, name: "Alia", age: 20 },
-  { id: 2, name: "Bulbul", age: 22 },
-  { id: 3, name: "Champu", age: 21 }
+  { id: 1, name: "Shreya", age: 20 },
+  { id: 2, name: "Satyam", age: 21 },
+  { id: 3, name: "Ayush", age: 21 }
 ];
 
 // Root route
