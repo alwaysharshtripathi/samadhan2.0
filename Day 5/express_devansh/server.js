@@ -6,8 +6,8 @@ app.use(express.json());
 
 let students = [
   { id: 1, name: "Pratiksha", age: 25 },
-  { id: 2, name: "Arya", age: 21 },
-  { id: 3, name: "Apoorva", age: 20 },
+  { id: 2, name: "Yash", age: 21 },
+  { id: 3, name: "Ajay", age: 20 },
 ];
 
 app.get("/", (req, res) => {
@@ -33,3 +33,4 @@ app.post("/students", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
