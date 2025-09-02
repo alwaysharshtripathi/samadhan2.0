@@ -1,0 +1,33 @@
+/* App.css */
+
+/* Tailwind layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+body {
+  @apply bg-gradient-to-r from-indigo-100 via-white to-pink-100 text-gray-900 antialiased min-h-screen;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold tracking-tight text-gray-800;
+}
+
+/* Buttons */
+.btn {
+  @apply px-5 py-2.5 rounded-2xl font-medium text-white bg-indigo-600 shadow-md transition transform duration-200 ease-in-out;
+}
+
+.btn:hover {
+  @apply bg-indigo-700 shadow-lg scale-105;
+}
+
+.btn-outline {
+  @apply px-5 py-2.5 rounded-2xl font-medium text-indigo-600 border border-indigo-600 bg-white shadow-sm transition duration-200;
+}
+
+.btn-outline:hover {
+  @apply bg-indigo-50 scale-105;
+}
