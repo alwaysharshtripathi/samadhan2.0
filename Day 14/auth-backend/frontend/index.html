@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh; overflow: hidden;
+            background: linear-gradient(180deg, #4c1d95 0%, #7c3aed 30%, #a855f7 60%, #c084fc 100%);
+            position: relative;
+        }
+        .stars { position: absolute; width: 100%; height: 100%; background: transparent; z-index: 1; }
+        .star { position: absolute; background: white; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); animation: twinkle 2s infinite ease-in-out alternate; }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(0.8);} 100% { opacity: 1; transform: scale(1.2);} }
+        .mountains { position: absolute; bottom: 0; width: 100%; height: 60%; z-index: 2; }
+        .mountain-back { position: absolute; bottom: 0; width: 100%; height: 80%;
+            background: linear-gradient(to right, rgba(79, 70, 229, 0.8) 0%, rgba(124, 58, 237, 0.6) 20%, rgba(139, 69, 193, 0.7) 40%, rgba(124, 58, 237, 0.6) 60%, rgba(79, 70, 229, 0.8) 80%, rgba(67, 56, 202, 0.9) 100%);
+            clip-path: polygon(0% 100%, 5% 60%, 15% 70%, 25% 50%, 35% 65%, 45% 45%, 55% 55%, 65% 35%, 75% 50%, 85% 40%, 95% 55%, 100% 60%, 100% 100%);
+        }
+        .mountain-front { position: absolute; bottom: 0; width: 100%; height: 60%;
+            background: linear-gradient(to right, rgba(67, 56, 202, 0.9) 0%, rgba(88, 28, 135, 0.95) 20%, rgba(79, 70, 229, 0.85) 40%, rgba(88, 28, 135, 0.95) 60%, rgba(67, 56, 202, 0.9) 80%, rgba(55, 48, 163, 1) 100%);
+            clip-path: polygon(0% 100%, 8% 80%, 18% 85%, 28% 65%, 38% 75%, 48% 55%, 58% 65%, 68% 45%, 78% 60%, 88% 50%, 98% 65%, 100% 70%, 100% 100%);
+        }
+        .trees { position: absolute; bottom: 0; width: 100%; height: 40%; z-index: 3; }
+        .tree { position: absolute; bottom: 0; width: 0; height: 0; border-style: solid; }
+        .container { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
+        .form-container { background: rgba(139, 92, 246, 0.15); backdrop-filter: blur(20px); border: 1px solid rgba(167, 139, 250, 0.3); border-radius: 20px; padding: 40px; width: 100%; max-width: 420px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        .form-title { color: white; font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; position: relative; }
+        .form-input { width: 100%; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(167, 139, 250, 0.3); border-radius: 12px; padding: 15px 45px 15px 15px; color: white; font-size: 16px; outline: none; transition: all 0.3s ease; }
+        .form-input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .form-input:focus { border-color: rgba(167, 139, 250, 0.6); background: rgba(139, 92, 246, 0.25); box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1); }
+        .input-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.5); font-size: 18px; }
+        .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; font-size: 14px; }
+        .checkbox-group { display: flex; align-items: center; color: rgba(255, 255, 255, 0.8); }
+        .checkbox-group input[type="checkbox"] { margin-right: 8px; accent-color: #8b5cf6; }
+        .forgot-link { color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s ease; }
+        .forgot-link:hover { color: white; }
+        .submit-btn { width: 100%; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); color: #374151; border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 20px; }
+        .submit-btn:hover { background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+        .switch-form { text-align: center; color: rgba(255, 255, 255, 0.8); font-size: 14px; }
+        .switch-link { color: white; text-decoration: none; font-weight: 600; margin-left: 5px; transition: color 0.3s ease; }
+        .switch-link:hover { color: #c4b5fd; }
+        .hidden { display: none; }
+        @media (max-width: 480px) { .form-container { padding: 30px 20px; margin: 0 10px; } .form-title { font-size: 28px; } }
+        .toast { position: fixed; top: 16px; right: 16px; background: rgba(255,255,255,.95); color:#111; padding: 12px 16px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,.2); z-index: 50; display:none; }
+        .toast.show{ display:block; }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="mountains"><div class="mountain-back"></div><div class="mountain-front"></div></div>
+    <div class="trees" id="trees"></div>
+
+    <div class="container">
+        <div class="form-container" id="loginForm">
+            <h2 class="form-title">Login</h2>
+            <form id="loginFormEl">
+                <div class="form-group">
+                    <input id="loginEmail" type="email" class="form-input" placeholder="Email" required>
+                    <span class="input-icon">📧</span>
+                </div>
+                <div class="form-group">
+                    <input id="loginPassword" type="password" class="form-input" placeholder="Password" required>
+                    <span class="input-icon">🔒</span>
+                </div>
+                <div class="form-options">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-link" onclick="info('Use Sign Up first')">Forgot password?</a>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <div class="switch-form">
+                Don't have an account?<a href="#" class="switch-link" onclick="switchToSignup()">Register</a>
+            </div>
+        </div>
+
+        <div class="form-container hidden" id="signupForm">
+            <h2 class="form-title">Sign Up</h2>
+            <form id="signupFormEl">
+                <div class="form-group">
+                    <input id="signupFullName" type="text" class="form-input" placeholder="Full Name" required>
+                    <span class="input-icon">👤</span>
+                </div>
+                <div class="form-group">
+                    <input id="signupEmail" type="email" class="form-input" placeholder="Email" required>
+                    <span class="input-icon">📧</span>
+                </div>
+                <div class="form-group">
+                    <input id="signupUsername" type="text" class="form-input" placeholder="Username" required>
+                    <span class="input-icon">👤</span>
+                </div>
+                <div class="form-group">
+                    <input id="signupPassword" type="password" class="form-input" placeholder="Password" required>
+                    <span class="input-icon">🔒</span>
+                </div>
+                <div class="form-group">
+                    <input id="signupConfirm" type="password" class="form-input" placeholder="Confirm Password" required>
+                    <span class="input-icon">🔒</span>
+                </div>
+                <div class="form-options">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to Terms & Conditions</label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+            <div class="switch-form">
+                Already have an account?<a href="#" class="switch-link" onclick="switchToLogin()">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const API_BASE = '/api/auth'; // served by the same Express server
+
+        function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+        function info(msg){ toast(msg); }
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 150;
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 70 + '%';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function createTrees() {
+            const treesContainer = document.getElementById('trees');
+            const numberOfTrees = 25;
+            for (let i = 0; i < numberOfTrees; i++) {
+                const tree = document.createElement('div');
+                tree.className = 'tree';
+                tree.style.left = Math.random() * 100 + '%';
+                const height = Math.random() * 80 + 40;
+                const width = height * 0.6;
+                tree.style.borderLeft = width/2 + 'px solid transparent';
+                tree.style.borderRight = width/2 + 'px solid transparent';
+                tree.style.borderBottom = height + 'px solid rgba(55, 48, 163, 0.8)';
+                treesContainer.appendChild(tree);
+            }
+        }
+
+        function switchToSignup() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+        }
+        function switchToLogin() {
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+
+        window.addEventListener('load', () => {
+            createStars(); createTrees();
+        });
+
+        // API helpers
+        async function api(path, body){
+            const res = await fetch(`${API_BASE}${path}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json().catch(()=>({}));
+            if(!res.ok) throw new Error(data.msg || 'Request failed');
+            return data;
+        }
+
+        // Form handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginFormEl');
+            const signupForm = document.getElementById('signupFormEl');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                try {
+                    const { token, user } = await api('/login', { email, password });
+                    localStorage.setItem('token', token);
+                    toast(`Welcome back, ${user.username}!`);
+                } catch(err){
+                    toast(err.message);
+                }
+            });
+            
+            signupForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const fullName = document.getElementById('signupFullName').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const username = document.getElementById('signupUsername').value.trim() || fullName.split(' ')[0];
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('signupConfirm').value;
+                if (password !== confirmPassword) {
+                    toast('Passwords do not match!'); return;
+                }
+                try {
+                    await api('/register', { username, email, password });
+                    toast('Registration successful! You can log in now.'); switchToLogin();
+                } catch(err){
+                    toast(err.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
