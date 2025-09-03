@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Successful - ShopHub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🛍️ ShopHub</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="products.html">Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <div class="success-container">
+      <div class="success-card">
+        <div class="success-icon">✅</div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your purchase. Your order has been confirmed.</p>
+        <p>You will receive an email confirmation shortly.</p>
+        <div class="success-actions">
+          <a href="products.html" class="cta-button">Continue Shopping</a>
+          <a href="index.html" class="secondary-button">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Clear cart after successful payment
+    fetch('http://localhost:5000/api/cart/clear', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" }
+    }).catch(err => console.log('Cart clear failed:', err));
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "name": "Gaming Laptop",
+    "price": 75000,
+    "description": "High performance gaming laptop with RTX graphics",
+    "category": "electronics",
+    "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=300"
+  },
+  {
+    "id": 2,
+    "name": "Wireless Headphones",
+    "price": 2500,
+    "description": "Premium noise cancelling wireless headphones",
+    "category": "electronics",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300"
+  },
+  {
+    "id": 3,
+    "name": "Smartphone Pro",
+    "price": 35000,
+    "description": "Latest flagship smartphone with advanced camera",
+    "category": "electronics",
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300"
+  },
+  {
+    "id": 4,
+    "name": "Smart Watch",
+    "price": 8000,
+    "description": "Fitness tracking smartwatch with heart rate monitor",
+    "category": "electronics",
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300"
+  },
+  {
+    "id": 5,
+    "name": "Men's Casual Shirt",
+    "price": 1200,
+    "description": "Comfortable cotton casual shirt for everyday wear",
+    "category": "clothing",
+    "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=300"
+  },
+  {
+    "id": 6,
+    "name": "Women's Summer Dress",
+    "price": 1800,
+    "description": "Elegant summer dress perfect for any occasion",
+    "category": "clothing",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300"
+  },
+  {
+    "id": 7,
+    "name": "Denim Jeans",
+    "price": 1500,
+    "description": "Classic blue denim jeans with perfect fit",
+    "category": "clothing",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300"
+  },
+  {
+    "id": 8,
+    "name": "Winter Jacket",
+    "price": 3500,
+    "description": "Warm and stylish winter jacket for cold weather",
+    "category": "clothing",
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300"
+  },
+  {
+    "id": 9,
+    "name": "Leather Wallet",
+    "price": 800,
+    "description": "Genuine leather wallet with multiple card slots",
+    "category": "accessories",
+    "image": "https://images.unsplash.com/photo-1627123424574-724758594e93?w=300"
+  },
+  {
+    "id": 10,
+    "name": "Sunglasses",
+    "price": 1200,
+    "description": "Stylish UV protection sunglasses",
+    "category": "accessories",
+    "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300"
+  },
+  {
+    "id": 11,
+    "name": "Leather Belt",
+    "price": 600,
+    "description": "Classic leather belt with silver buckle",
+    "category": "accessories",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300"
+  },
+  {
+    "id": 12,
+    "name": "Backpack",
+    "price": 1500,
+    "description": "Durable laptop backpack with multiple compartments",
+    "category": "accessories",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300"
+  },
+  {
+    "id": 13,
+    "name": "Coffee Maker",
+    "price": 2500,
+    "description": "Automatic coffee maker for perfect brew every time",
+    "category": "household",
+    "image": "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=300"
+  },
+  {
+    "id": 14,
+    "name": "Kitchen Blender",
+    "price": 1800,
+    "description": "High-speed blender for smoothies and food processing",
+    "category": "household",
+    "image": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=300"
+  },
+  {
+    "id": 15,
+    "name": "Bedding Set",
+    "price": 2200,
+    "description": "Soft cotton bedding set for comfortable sleep",
+    "category": "household",
+    "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=300"
+  },
+  {
+    "id": 16,
+    "name": "Table Lamp",
+    "price": 900,
+    "description": "Modern LED table lamp with adjustable brightness",
+    "category": "household",
+    "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300"
+  }
+]

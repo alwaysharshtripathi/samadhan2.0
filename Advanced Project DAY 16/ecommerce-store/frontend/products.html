@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products - ShopHub</title>
+  <link rel="stylesheet" href="styles.css?v=2" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script>window.customProductsLoader = true;</script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🛍️ ShopHub</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <div class="page-header">
+      <h1 id="page-title">Product Catalog</h1>
+      <p id="page-description">Browse our amazing collection of products</p>
+    </div>
+
+    <div class="products-layout">
+      <!-- Sidebar with Categories -->
+      <aside class="categories-sidebar">
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Shop by Categories</h3>
+          <ul class="category-list">
+            <li class="category-item active" data-category="all" onclick="filterByCategory('all', this)">
+              <span class="category-name">All Products</span>
+              <i class="fas fa-chevron-right"></i>
+            </li>
+            <li class="category-item" data-category="electronics" onclick="filterByCategory('electronics', this)">
+              <span class="category-name">Electronics</span>
+              <i class="fas fa-chevron-right"></i>
+            </li>
+            <li class="category-item" data-category="clothing" onclick="filterByCategory('clothing', this)">
+              <span class="category-name">Clothing</span>
+              <i class="fas fa-chevron-right"></i>
+            </li>
+            <li class="category-item" data-category="accessories" onclick="filterByCategory('accessories', this)">
+              <span class="category-name">Accessories</span>
+              <i class="fas fa-chevron-right"></i>
+            </li>
+            <li class="category-item" data-category="household" onclick="filterByCategory('household', this)">
+              <span class="category-name">Household</span>
+              <i class="fas fa-chevron-right"></i>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Quick Filters</h3>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" id="price-low" onchange="applyPriceFilter()">
+              <span class="checkmark"></span>
+              Under ₹1000
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" id="price-medium" onchange="applyPriceFilter()">
+              <span class="checkmark"></span>
+              ₹1000 - ₹5000
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" id="price-high" onchange="applyPriceFilter()">
+              <span class="checkmark"></span>
+              Above ₹5000
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Products Area -->
+      <div class="products-main">
+        <div class="products-header">
+          <div class="products-count">
+            <span id="products-count">0</span> products found
+          </div>
+          <div class="sort-options">
+            <select id="sort-select" onchange="sortProducts()">
+              <option value="default">Sort by</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="products" class="products-grid">
+          <!-- Products will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    let allProducts = [];
+    let currentCategory = 'all';
+    let filteredProducts = [];
+    let cartQuantities = {}; // id -> qty
+
+    // Load products on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+      await loadProducts();
+      checkSelectedCategory();
+      // Initial sync of cart quantities
+      fetchCartAndApply();
+    });
+
+    async function fetchCartAndApply() {
+      try {
+        const res = await fetch('http://localhost:5000/api/cart', { cache: 'no-store' });
+        const items = await res.json();
+        cartQuantities = {};
+        items.forEach(i => { cartQuantities[i.id] = i.quantity || 1; });
+        applyCartQuantities();
+        // If a featured product was selected, scroll to it
+        const selectedId = localStorage.getItem('selectedProductId');
+        if (selectedId) {
+          const card = document.querySelector(`.product-card[data-id='${selectedId}']`);
+          if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.add('highlight-card');
+            setTimeout(() => card.classList.remove('highlight-card'), 1500);
+          }
+          localStorage.removeItem('selectedProductId');
+        }
+      } catch (e) { console.warn('cart fetch failed', e); }
+    }
+
+    function applyCartQuantities() {
+      // For each product card, show chip if qty > 0 else show Add button
+      allProducts.forEach(p => {
+        const card = document.querySelector(`.product-card[data-id='${p.id}']`);
+        if (!card) return;
+        const qty = cartQuantities[p.id] || 0;
+        const addBtn = card.querySelector(`#add-btn-${p.id}`);
+        const controls = card.querySelector('.qty-controls');
+        const qtyEl = card.querySelector(`#qty-${p.id}`);
+        if (qty > 0) {
+          addBtn.style.display = 'none';
+          controls.style.display = 'inline-flex';
+          qtyEl.textContent = String(qty);
+          const del = card.querySelector('.delete-small');
+          del.style.display = 'inline-block';
+          const go = card.querySelector('.go-cart-btn');
+          go.style.display = 'inline-block';
+        } else {
+          controls.style.display = 'none';
+          addBtn.style.display = 'block';
+          const del = card.querySelector('.delete-small');
+          del.style.display = 'none';
+          const go = card.querySelector('.go-cart-btn');
+          go.style.display = 'none';
+        }
+      });
+    }
+
+    async function loadProducts() {
+      try {
+        const response = await fetch('http://localhost:5000/api/products');
+        allProducts = await response.json();
+        filteredProducts = [...allProducts];
+        displayProducts(filteredProducts);
+        updateProductsCount();
+        // After rendering, apply existing cart quantities if available
+        applyCartQuantities();
+      } catch (error) {
+        console.error('Error loading products:', error);
+        document.getElementById('products').innerHTML = '<div class="error">Error loading products. Please try again later.</div>';
+      }
+    }
+
+    function displayProducts(products) {
+      const productsContainer = document.getElementById('products');
+      
+      if (products.length === 0) {
+        productsContainer.innerHTML = '<div class="empty-state">No products found in this category.</div>';
+        return;
+      }
+
+      productsContainer.innerHTML = products.map(product => `
+        <div class="product-card" data-id="${product.id}">
+          <div class="product-image">
+            <img src="${product.image || 'https://via.placeholder.com/300x200?text=Product'}" alt="${product.name}">
+            <div class="product-overlay">
+              <button class="quick-view-btn">Quick View</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            <p class="product-description">${product.description}</p>
+            <div class="product-price">₹${product.price.toLocaleString()}</div>
+            <div class="card-actions">
+              <a class="go-cart-btn" href="cart.html" style="display:none">Go to Cart</a>
+              <div class="qty-controls" style="display:none">
+                <button class="qty-btn" onclick="decrementItem(${product.id})">🗑️</button>
+                <span class="qty-count" id="qty-${product.id}">1</span>
+                <button class="qty-btn" onclick="incrementItem(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price})">+</button>
+              </div>
+              <button class="add-to-cart-btn" id="add-btn-${product.id}" onclick="addFirst(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price})">Add to Cart</button>
+              <button class="delete-small" onclick="deleteAllFromCard(${product.id})" title="Delete from cart" style="display:none">Delete</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // First add shows the quantity controls
+    function addFirst(id, name, price) {
+      addToCart(id, name, price).then(() => {
+        // After successful add, bump local map and reveal chip
+        cartQuantities[id] = (cartQuantities[id] || 0) + 1;
+        const card = document.querySelector(`.product-card[data-id='${id}']`);
+        if (!card) return;
+        card.querySelector('.add-to-cart-btn').style.display = 'none';
+        const controls = card.querySelector('.qty-controls');
+        controls.style.display = 'inline-flex'; // let CSS control padding/gap/size
+        document.getElementById(`qty-${id}`).textContent = String(cartQuantities[id]);
+        const del = card.querySelector('.delete-small');
+        del.style.display = 'inline-block';
+        const go = card.querySelector('.go-cart-btn');
+        go.style.display = 'inline-block';
+      });
+    }
+
+    async function incrementItem(id, name, price) {
+      await addToCart(id, name, price);
+      cartQuantities[id] = (cartQuantities[id] || 0) + 1;
+      const qty = document.getElementById(`qty-${id}`);
+      qty.textContent = String(cartQuantities[id]);
+      const card = document.querySelector(`.product-card[data-id='${id}']`);
+      card.querySelector('.delete-small').style.display = 'inline-block';
+      card.querySelector('.go-cart-btn').style.display = 'inline-block';
+    }
+
+    async function decrementItem(id) {
+      try {
+        await fetch('http://localhost:5000/api/cart/remove', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        }).then(r => { if (!r.ok) throw new Error('remove failed'); return r.json(); });
+        // notify other pages
+        if (window.bumpCartVersion) window.bumpCartVersion();
+        cartQuantities[id] = Math.max(0, (cartQuantities[id] || 1) - 1);
+        const newVal = cartQuantities[id];
+        if (newVal <= 0) {
+          const card = document.querySelector(`.product-card[data-id='${id}']`);
+          card.querySelector('.qty-controls').style.display = 'none';
+          card.querySelector(`#add-btn-${id}`).style.display = 'block';
+          card.querySelector('.delete-small').style.display = 'none';
+          card.querySelector('.go-cart-btn').style.display = 'none';
+        } else {
+          document.getElementById(`qty-${id}`).textContent = String(newVal);
+        }
+      } catch(e) {
+        console.error(e);
+        showMessage('Failed to update quantity', 'error');
+      }
+    }
+
+    async function deleteAllFromCard(id) {
+      try {
+        await fetch('http://localhost:5000/api/cart/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        }).then(r => { if (!r.ok) throw new Error('delete failed'); return r.json(); });
+        cartQuantities[id] = 0;
+        const card = document.querySelector(`.product-card[data-id='${id}']`);
+        if (card) {
+          card.querySelector('.qty-controls').style.display = 'none';
+          card.querySelector(`#add-btn-${id}`).style.display = 'block';
+          card.querySelector('.delete-small').style.display = 'none';
+          card.querySelector('.go-cart-btn').style.display = 'none';
+        }
+        if (window.bumpCartVersion) window.bumpCartVersion();
+      } catch (e) {
+        console.error(e);
+        showMessage('Failed to delete item', 'error');
+      }
+    }
+
+    // React to cart changes from other tabs/pages
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'cartVersion') {
+        fetchCartAndApply();
+      }
+    });
+
+    function filterByCategory(category, el) {
+      currentCategory = category;
+      
+      // Update active category in sidebar
+      document.querySelectorAll('.category-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      if (el) { el.classList.add('active'); }
+
+      // Filter products
+      if (category === 'all') {
+        filteredProducts = [...allProducts];
+      } else {
+        filteredProducts = allProducts.filter(product => product.category === category);
+      }
+
+      // Apply price filters if any are active
+      applyPriceFilter(false);
+      
+      // Update page title and description
+      updatePageInfo(category);
+      
+      // Display filtered products
+      displayProducts(filteredProducts);
+      updateProductsCount();
+      // Re-apply cart quantities after re-render
+      applyCartQuantities();
+      // Smooth scroll to products grid
+      const grid = document.getElementById('products');
+      if (grid) {
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function applyPriceFilter(shouldScroll = true) {
+      const priceLow = document.getElementById('price-low').checked;
+      const priceMedium = document.getElementById('price-medium').checked;
+      const priceHigh = document.getElementById('price-high').checked;
+
+      // Reset to category filter first
+      if (currentCategory === 'all') {
+        filteredProducts = [...allProducts];
+      } else {
+        filteredProducts = allProducts.filter(product => product.category === currentCategory);
+      }
+
+      // Apply price filters
+      if (priceLow || priceMedium || priceHigh) {
+        filteredProducts = filteredProducts.filter(product => {
+          if (priceLow && product.price < 1000) return true;
+          if (priceMedium && product.price >= 1000 && product.price <= 5000) return true;
+          if (priceHigh && product.price > 5000) return true;
+          return false;
+        });
+      }
+
+      displayProducts(filteredProducts);
+      updateProductsCount();
+      applyCartQuantities();
+      if (shouldScroll) {
+        const grid = document.getElementById('products');
+        if (grid) {
+          grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
+    function sortProducts() {
+      const sortValue = document.getElementById('sort-select').value;
+      
+      switch(sortValue) {
+        case 'price-low':
+          filteredProducts.sort((a, b) => a.price - b.price);
+          break;
+        case 'price-high':
+          filteredProducts.sort((a, b) => b.price - a.price);
+          break;
+        case 'name':
+          filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        default:
+          if (currentCategory === 'all') {
+            filteredProducts = [...allProducts];
+          } else {
+            filteredProducts = allProducts.filter(product => product.category === currentCategory);
+          }
+      }
+
+      displayProducts(filteredProducts);
+      applyCartQuantities();
+    }
+
+    function updatePageInfo(category) {
+      const pageTitle = document.getElementById('page-title');
+      const pageDescription = document.getElementById('page-description');
+      
+      const categoryInfo = {
+        'all': {
+          title: 'Product Catalog',
+          description: 'Browse our amazing collection of products'
+        },
+        'electronics': {
+          title: 'Electronics',
+          description: 'Latest gadgets and tech devices'
+        },
+        'clothing': {
+          title: 'Clothing',
+          description: 'Fashion for every style and season'
+        },
+        'accessories': {
+          title: 'Accessories',
+          description: 'Complete your look with style'
+        },
+        'household': {
+          title: 'Household',
+          description: 'Everything for your home'
+        }
+      };
+
+      pageTitle.textContent = categoryInfo[category].title;
+      pageDescription.textContent = categoryInfo[category].description;
+    }
+
+    function updateProductsCount() {
+      const count = filteredProducts.length;
+      document.getElementById('products-count').textContent = count;
+    }
+
+    function checkSelectedCategory() {
+      const selectedCategory = localStorage.getItem('selectedCategory');
+      if (selectedCategory) {
+        // Set active on sidebar
+        const el = document.querySelector(`.category-item[data-category='${selectedCategory}']`);
+        if (el) {
+          filterByCategory(selectedCategory, el);
+        } else {
+          filterByCategory(selectedCategory);
+        }
+        localStorage.removeItem('selectedCategory');
+      }
+    }
+  </script>
+</body>
+</html>

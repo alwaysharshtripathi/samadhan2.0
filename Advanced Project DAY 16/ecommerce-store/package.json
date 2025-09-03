@@ -1,0 +1,19 @@
+{
+  "name": "ecommerce-store",
+  "version": "1.0.0",
+  "description": "E-commerce store with frontend and backend",
+  "scripts": {
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npx http-server -p 8080 -c-1",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "dependencies": {
+    "razorpay": "^2.9.6",
+    "stripe": "^18.4.0",
+    "concurrently": "^8.2.2"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

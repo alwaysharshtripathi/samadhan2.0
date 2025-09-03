@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews & Feedback - ShopHub</title>
+  <link rel="stylesheet" href="styles.css?v=2" />
+</head>
+<body>
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🛍️ ShopHub</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <div class="page-header">
+      <h1>Reviews & Feedback</h1>
+      <p>Share your experience with ShopHub</p>
+    </div>
+
+    <section class="features-section">
+      <form id="review-form" class="feature-card" style="max-width:600px;margin:auto;">
+        <h3 style="margin-bottom:1rem;color:#2c3e50;" id="form-title">Leave a Review</h3>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <input id="name" type="text" placeholder="Your Name" required style="padding:0.75rem;border:1px solid #dee2e6;border-radius:8px;" />
+          <input id="email" type="email" placeholder="Email (optional)" style="padding:0.75rem;border:1px solid #dee2e6;border-radius:8px;" />
+          <select id="rating" required style="padding:0.75rem;border:1px solid #dee2e6;border-radius:8px;">
+            <option value="">Rating</option>
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★☆</option>
+            <option value="3">★★★☆☆</option>
+            <option value="2">★★☆☆☆</option>
+            <option value="1">★☆☆☆☆</option>
+          </select>
+          <textarea id="message" rows="4" placeholder="Write your feedback..." required style="padding:0.75rem;border:1px solid #dee2e6;border-radius:8px;"></textarea>
+          <div style="display:flex;gap:0.5rem;align-items:center;">
+            <button class="go-cart-btn" type="submit" id="submit-btn" style="width:fit-content;">Submit</button>
+            <button class="delete-small" type="button" id="cancel-edit" style="display:none;">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section class="features-section">
+      <div class="section-header">
+        <h2>Recent Reviews</h2>
+        <p>What our customers are saying</p>
+      </div>
+      <div id="reviews-list" class="features-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>ShopHub</h3>
+        <p>Your ultimate shopping destination for quality products.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="reviews.html">Reviews & Feedback</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 ShopHub. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // A lightweight way to identify the current user (no auth):
+    const CLIENT_ID_KEY = 'shophub_client_id';
+    // Set this to your deployed Google Apps Script Web App URL
+    // After you deploy the Apps Script (instructions below), paste the URL here:
+    const SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz_QSQIMJoqTmE80unOj5tXNMBjLi922EHBQTLBCl0/exec';
+
+    function getClientId() {
+      let id = localStorage.getItem(CLIENT_ID_KEY);
+      if (!id) {
+        id = 'client_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem(CLIENT_ID_KEY, id);
+      }
+      return id;
+    }
+
+    const STATE = { editingId: null };
+
+    async function sendToSheets(row) {
+      try {
+        // Send data to our backend proxy instead of directly to Google Sheets
+        const sheetsData = {
+          id: row.id || '',
+          name: row.name || '',
+          email: row.email || '',
+          rating: row.rating || '',
+          message: row.message || '',
+          clientId: row.clientId || '',
+          date: row.date || '',
+          action: row.action || ''
+        };
+        
+        console.log('Sending to backend proxy:', sheetsData);
+        
+        // Use our backend as a proxy to avoid CORS issues
+        const apiUrl = window.CONFIG ? window.CONFIG.API_BASE_URL + '/reviews/submit' : 'http://localhost:5000/api/reviews/submit';
+        console.log('Using API URL:', apiUrl);
+        
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(sheetsData)
+        });
+        
+        console.log('Backend response status:', res.status);
+        
+        if (res.ok) {
+          const responseData = await res.json();
+          console.log('Review saved successfully via backend:', responseData);
+          alert('Review submitted successfully! Check your Google Sheet.');
+        } else {
+          const errorData = await res.json();
+          console.error('Backend sync failed:', res.status, errorData);
+          alert('Failed to save to Google Sheets. Check console for details.');
+        }
+      } catch (e) {
+        console.error('Backend sync failed (will keep local):', e);
+        alert('Network error. Review saved locally but not to Google Sheets.');
+      }
+    }
+
+    function loadReviews() {
+      const container = document.getElementById('reviews-list');
+      const raw = localStorage.getItem('shophub_reviews');
+      const reviews = raw ? JSON.parse(raw) : [];
+      if (reviews.length === 0) {
+        container.innerHTML = '<div class="empty-state">No reviews yet. Be the first to share your feedback!</div>';
+        return;
+      }
+      const currentClient = getClientId();
+      container.innerHTML = reviews.map(r => `
+        <div class="feature-card" style="text-align:left;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+            <h3 style="margin-bottom:0.25rem;">${r.name || 'Anonymous'}</h3>
+            ${r.clientId === currentClient ? `
+              <div style="display:flex;gap:0.5rem;">
+                <button class="go-cart-btn" onclick="editReview('${r.id}')">Edit</button>
+                <button class="delete-small" onclick="deleteReview('${r.id}')">Delete</button>
+              </div>
+            ` : ''}
+          </div>
+          <div style="color:#f1c40f;margin-bottom:0.5rem;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+          <p style="color:#6c757d;white-space:pre-wrap;">${r.message}</p>
+          <div style="margin-top:0.5rem;color:#95a5a6;font-size:0.85rem;">${new Date(r.date).toLocaleString()}</div>
+        </div>
+      `).join('');
+    }
+
+    function upsertReview(review) {
+      const raw = localStorage.getItem('shophub_reviews');
+      const reviews = raw ? JSON.parse(raw) : [];
+      const idx = reviews.findIndex(r => r.id === review.id);
+      if (idx >= 0) reviews[idx] = review; else reviews.unshift(review);
+      localStorage.setItem('shophub_reviews', JSON.stringify(reviews));
+    }
+
+    function getReview(id) {
+      const raw = localStorage.getItem('shophub_reviews');
+      const reviews = raw ? JSON.parse(raw) : [];
+      return reviews.find(r => r.id === id);
+    }
+
+    function removeReview(id) {
+      const raw = localStorage.getItem('shophub_reviews');
+      const reviews = raw ? JSON.parse(raw) : [];
+      const filtered = reviews.filter(r => r.id !== id);
+      localStorage.setItem('shophub_reviews', JSON.stringify(filtered));
+    }
+
+    function editReview(id) {
+      const r = getReview(id);
+      if (!r) return;
+      STATE.editingId = id;
+      document.getElementById('form-title').textContent = 'Edit Your Review';
+      document.getElementById('submit-btn').textContent = 'Update';
+      document.getElementById('cancel-edit').style.display = 'inline-block';
+      document.getElementById('name').value = r.name || '';
+      document.getElementById('email').value = r.email || '';
+      document.getElementById('rating').value = String(r.rating || '');
+      document.getElementById('message').value = r.message || '';
+      document.getElementById('review-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function deleteReview(id) {
+      if (!confirm('Delete this review?')) return;
+      removeReview(id);
+      if (STATE.editingId === id) resetForm();
+      loadReviews();
+      // Optional: also send a delete signal to Sheets if you maintain IDs there
+    }
+
+    function resetForm() {
+      STATE.editingId = null;
+      document.getElementById('review-form').reset();
+      document.getElementById('form-title').textContent = 'Leave a Review';
+      document.getElementById('submit-btn').textContent = 'Submit';
+      document.getElementById('cancel-edit').style.display = 'none';
+    }
+
+    document.getElementById('cancel-edit').addEventListener('click', resetForm);
+
+    document.getElementById('review-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentClient = getClientId();
+      const base = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        rating: Number(document.getElementById('rating').value),
+        message: document.getElementById('message').value.trim(),
+        clientId: currentClient,
+      };
+      if (STATE.editingId) {
+        const existing = getReview(STATE.editingId);
+        if (!existing || existing.clientId !== currentClient) {
+          alert('You can edit only your own reviews.');
+          return;
+        }
+        const updated = { ...existing, ...base, date: Date.now() };
+        upsertReview(updated);
+        // Send update to Sheets as a new row (simplest). For a true update, include logic in Apps Script by id
+        sendToSheets({ 
+          id: updated.id,
+          name: updated.name,
+          email: updated.email,
+          rating: updated.rating,
+          message: updated.message,
+          clientId: updated.clientId,
+          date: new Date().toISOString(), // Send as ISO string for better compatibility
+          action: 'upsert'
+        });
+      } else {
+        const newReview = {
+          id: 'rvw_' + Math.random().toString(36).slice(2) + Date.now().toString(36),
+          ...base,
+          date: Date.now()
+        };
+        upsertReview(newReview);
+        console.log('About to send new review to sheets:', newReview);
+        sendToSheets({ 
+          id: newReview.id,
+          name: newReview.name,
+          email: newReview.email,
+          rating: newReview.rating,
+          message: newReview.message,
+          clientId: newReview.clientId,
+          date: new Date().toISOString(), // Send as ISO string for better compatibility
+          action: 'create'
+        });
+      }
+      resetForm();
+      loadReviews();
+    });
+
+    document.addEventListener('DOMContentLoaded', loadReviews);
+  </script>
+</body>
+</html>

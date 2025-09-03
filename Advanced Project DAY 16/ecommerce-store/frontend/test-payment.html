@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Test - ShopHub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🛍️ ShopHub</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="products.html">Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <div class="page-header">
+      <h1>Payment System Test</h1>
+      <p>Test the payment integration</p>
+    </div>
+
+    <div class="test-container">
+      <div class="test-card">
+        <h2>Test Payment Flow</h2>
+        <p>This will test the complete payment flow:</p>
+        <ol>
+          <li>Add test items to cart</li>
+          <li>Create Stripe checkout session</li>
+          <li>Redirect to Stripe payment page</li>
+        </ol>
+        
+        <div class="test-actions">
+          <button onclick="testPayment()" class="cta-button">Test Payment</button>
+          <button onclick="clearCart()" class="secondary-button">Clear Cart</button>
+        </div>
+        
+        <div id="test-results" class="test-results"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const API_URL = "http://localhost:5000/api";
+    
+    function showResult(message, type = 'success') {
+      const resultsDiv = document.getElementById('test-results');
+      resultsDiv.innerHTML = `<div class="${type === 'success' ? 'success-message' : 'error'}">${message}</div>`;
+    }
+    
+    async function testPayment() {
+      try {
+        // Step 1: Add test items to cart
+        showResult('Adding test items to cart...', 'success');
+        
+        const testItems = [
+          { id: 1, name: "Test Product 1", price: 100 },
+          { id: 2, name: "Test Product 2", price: 200 }
+        ];
+        
+        for (const item of testItems) {
+          await fetch(`${API_URL}/cart/add`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(item)
+          });
+        }
+        
+        showResult('Test items added to cart. Creating checkout session...', 'success');
+        
+        // Step 2: Get cart items
+        const cartResponse = await fetch(`${API_URL}/cart`);
+        const cartItems = await cartResponse.json();
+        
+        // Step 3: Create checkout session
+        const checkoutResponse = await fetch(`${API_URL}/checkout`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: cartItems })
+        });
+        
+        if (!checkoutResponse.ok) {
+          const error = await checkoutResponse.json();
+          throw new Error(error.error || 'Checkout failed');
+        }
+        
+        const checkoutData = await checkoutResponse.json();
+        
+        if (checkoutData.url) {
+          showResult('Checkout session created! Redirecting to Stripe...', 'success');
+          // Redirect to Stripe checkout
+          window.location.href = checkoutData.url;
+        } else {
+          throw new Error('No checkout URL received');
+        }
+        
+      } catch (error) {
+        console.error('Test failed:', error);
+        showResult(`Test failed: ${error.message}`, 'error');
+      }
+    }
+    
+    async function clearCart() {
+      try {
+        await fetch(`${API_URL}/cart/clear`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+        showResult('Cart cleared successfully!', 'success');
+      } catch (error) {
+        showResult(`Failed to clear cart: ${error.message}`, 'error');
+      }
+    }
+  </script>
+
+  <style>
+    .test-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .test-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      width: 100%;
+    }
+    
+    .test-card h2 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    
+    .test-card ol {
+      margin: 1rem 0;
+      padding-left: 2rem;
+    }
+    
+    .test-card li {
+      margin-bottom: 0.5rem;
+      color: #666;
+    }
+    
+    .test-actions {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .test-results {
+      margin-top: 1rem;
+    }
+  </style>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

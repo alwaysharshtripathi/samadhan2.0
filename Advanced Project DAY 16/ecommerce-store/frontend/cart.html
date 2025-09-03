@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart - ShopHub</title>
+  <link rel="stylesheet" href="styles.css?v=2" />
+  <script src="config.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🛍️ ShopHub</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="products.html">Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <div class="page-header">
+      <h1>Your Shopping Cart</h1>
+      <p>Review your items and proceed to checkout</p>
+    </div>
+
+    <div id="cart" class="cart-container">
+      <!-- Cart items will be loaded here -->
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>
