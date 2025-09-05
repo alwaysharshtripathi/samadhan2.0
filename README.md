@@ -18,7 +18,7 @@ Kaustubh Bajpai - Database and Frontend Developer- GitHub: @Kaustubhbajpai7777;
 | 📋 Submission Component | 🔗 Access Link | 📊 Status |
 |--------------------------|----------------|------------|
 | 📊 Project Presentation | [View PPT](https://docs.google.com/presentation/d/1_mH3gdWIfWVLnKfGl4PY26wbs6HmuHX_/edit?usp=drive_link&ouid=106813878447204705836&rtpof=true&sd=true) | ✅ Completed |
-| 🎥 Demo Video | [Watch on YouTube](https://youtu.be/4oYuHxa248Y) | ✅ Completed |
+| 🎥 Demo Video | [Watch on YouTube](https://youtu.be/O57fA2gFYss) | ✅ Completed |
 
 
 ✨ Our Commitment
