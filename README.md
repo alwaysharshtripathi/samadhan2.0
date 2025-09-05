@@ -10,12 +10,21 @@ We believe that the journey is as important as the destination, and this reposit
 👥 Meet the Team
 Meet the dedicated members of our team. We are a group of passionate individuals eager to learn and contribute.
 
-Harsh Tripathi - Team Lead, Frontend Developer, Design - GitHub: @alwaysharshtripathi; 
-Devansh Shrivastava - Backend Developer - GitHub: @devanshshrivastava16; 
-Kaustubh Bajpai - Database and UI - GitHub: @Kaustubhbajpai7777; 
+Harsh Tripathi - Team Lead, Core Developer, Design - GitHub: @alwaysharshtripathi; 
+Kaustubh Bajpai - Database and Frontend Developer- GitHub: @Kaustubhbajpai7777; 
+
+## 📌 Submission Status
+
+| 📋 Submission Component | 🔗 Access Link | 📊 Status |
+|--------------------------|----------------|------------|
+| 📊 Project Presentation | [View PPT]([your-link-here](https://docs.google.com/presentation/d/1_mH3gdWIfWVLnKfGl4PY26wbs6HmuHX_/edit?usp=drive_link&ouid=106813878447204705836&rtpof=true&sd=true)) | ✅ Completed |
+| 🎥 Demo Video | [Watch on YouTube](https://youtu.be/4oYuHxa248Y) | ✅ Completed |
+
 
 ✨ Our Commitment
 We pledge to uphold the following principles throughout the challenge:
 🤝 Radical Collaboration: We will work together, leveraging each other's strengths and providing constructive feedback to deliver the best possible solutions.
 🕒 Daily Dedication: We commit to engaging with the tasks every single day, ensuring consistent progress and active participation from all members.
 💡 Passion for Learning: We view every task as an opportunity to learn something new, experiment with different approaches, and expand our skill sets.
+
+
