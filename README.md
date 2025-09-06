@@ -19,7 +19,7 @@ Meet the dedicated members of our team. We are a group of passionate individuals
 
 | 📋 Submission Component | 🔗 Access Link | 📊 Status |
 |--------------------------|----------------|------------|
-| 📊 Project Presentation | [View PPT](https://docs.google.com/presentation/d/1_mH3gdWIfWVLnKfGl4PY26wbs6HmuHX_/edit?usp=drive_link&ouid=106813878447204705836&rtpof=true&sd=true) | ✅ Completed |
+| 📊 Project Presentation | [View PPT](https://docs.google.com/presentation/d/1_mH3gdWIfWVLnKfGl4PY26wbs6HmuHX_/edit?usp=sharing&ouid=106813878447204705836&rtpof=true&sd=true) | ✅ Completed |
 | 🎥 Demo Video | [Watch on YouTube](https://youtu.be/SqS3SkqKvYU) | ✅ Completed |
 
 
