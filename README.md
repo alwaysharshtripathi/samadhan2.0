@@ -1,4 +1,5 @@
 SISTec Samadhan 2.0 Team Ctrl Freaks' Chasathon Journey
+
 Welcome to the official progress repository for Team Ctrl Freaks for the Samadhan 2.0 Hackathon organized by the Calm Chase Community. 
 This repository serves as a living document, showcasing our daily commitment, collaborative spirit, and passion for learning and problem-solving. 
 We are excited to demonstrate our skills and grow as a team as we progress while tackling the daily mini-tasks .
